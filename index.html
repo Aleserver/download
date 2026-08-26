@@ -18,20 +18,32 @@
 
   <script>
     document.getElementById("shieldForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevents default form submit/page refresh
+      event.preventDefault();
 
-      const inputCode = document.getElementById("loopeyline").value.trim();
+      // Clean input: remove invisible non-printable characters, trim spaces, convert to uppercase
+      let rawInput = document.getElementById("loopeyline").value;
+      let cleanInput = rawInput
+        .replace(/[\u200B-\u200D\uFEFF]/g, "") // strip zero-width/invisible chars
+        .trim()
+        .toUpperCase();
 
-      // Uses \u2105 (explicit Unicode for '℅') to prevent encoding issues,
-      // and accepts standard '%' sign as a fallback.
-      if (
-        inputCode === "3876J\u2105@0" || 
-        inputCode === "3876J%@0" || 
-        inputCode === "2854983"
-      ) {
+      // Allowed valid codes (in uppercase)
+      const validCodes = [
+        "3876J%@0",     // Standard percent sign
+        "3876J\u2105@0", // Care-of symbol ℅
+        "2854983"        // Numeric code
+      ];
+
+      if (validCodes.includes(cleanInput)) {
         window.location.href = "./main";
       } else {
-        alert("Incorrect code. Please try again.");
+        // Detailed error to help you identify what the browser actually sees
+        alert(
+          "Incorrect code!\n\n" +
+          "What you typed: \"" + rawInput + "\"\n" +
+          "Cleaned value: \"" + cleanInput + "\"\n" +
+          "Character count: " + cleanInput.length
+        );
       }
     });
   </script>
