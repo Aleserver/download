@@ -334,7 +334,7 @@
       </div>
       <div class="avatar-placeholder">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
       </div>
     </div>
@@ -445,7 +445,8 @@
   <script type="module">
     import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
 
-    const SELECTED_MODEL = "SmolLM-135M-Instruct-q4f16_1-MLC";
+    const SELECTED_MODEL = "SmolLM2-135M-Instruct-q4f16_1-MLC";
+
     const statusEl = document.getElementById("llm-status");
     const chatBox = document.getElementById("chat-box");
     const chatForm = document.getElementById("chat-form");
@@ -475,15 +476,13 @@
     async function initEngine() {
       statusEl.textContent = "Status: Connecting to WebGPU...";
 
-      // 1. Diagnostic check for WebGPU availability in browser
       if (!navigator.gpu) {
         statusEl.textContent = "Status: WebGPU Unsupported";
-        appendMessage("system", "[DIAGNOSTIC ERROR]: `navigator.gpu` is undefined. Your phone's browser or GPU driver lacks WebGPU API support.");
+        appendMessage("system", "[DIAGNOSTIC ERROR]: `navigator.gpu` is undefined.");
         useMobileFallback = true;
         return;
       }
 
-      // 2. Initialize WebLLM engine and catch exact hardware rejection reasons
       try {
         engine = await CreateMLCEngine(SELECTED_MODEL, {
           initProgressCallback: (progress) => {
@@ -494,7 +493,7 @@
       } catch (err) {
         console.error(err);
         statusEl.textContent = "Status: Fallback Activated";
-        appendMessage("system", `[WEBGPU HARDWARE ERROR]: ${err.message || err}`);
+        appendMessage("system", `[WEBGPU ERROR]: ${err.message || err}`);
         useMobileFallback = true;
       }
     }
