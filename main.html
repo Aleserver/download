@@ -249,7 +249,7 @@
     .chat-container {
       display: flex;
       flex-direction: column;
-      height: 280px;
+      height: 320px;
     }
 
     .chat-box {
@@ -257,21 +257,21 @@
       overflow-y: auto;
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      padding: 0.625rem;
+      padding: 0.75rem;
       background-color: var(--bg-color);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
       font-size: 0.75rem;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.625rem;
       margin-bottom: 0.625rem;
     }
 
     .chat-msg {
-      padding: 6px 10px;
-      border-radius: 6px;
-      max-width: 90%;
-      line-height: 1.35;
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 85%;
+      line-height: 1.4;
       word-break: break-word;
     }
 
@@ -279,6 +279,8 @@
       align-self: flex-end;
       background-color: var(--accent-blue);
       color: #ffffff;
+      font-family: var(--font-family);
+      font-size: 0.8125rem;
     }
 
     .chat-msg.system {
@@ -286,6 +288,8 @@
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
       color: var(--text-primary);
+      font-family: var(--font-family);
+      font-size: 0.8125rem;
     }
 
     .chat-input-group {
@@ -295,7 +299,7 @@
 
     .chat-input {
       flex: 1;
-      padding: 0.5rem;
+      padding: 0.5rem 0.75rem;
       border: 1px solid var(--border-color);
       border-radius: 6px;
       font-size: 0.8125rem;
@@ -308,7 +312,7 @@
       color: #fff;
       border: none;
       border-radius: 6px;
-      padding: 0 0.875rem;
+      padding: 0 1rem;
       font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
@@ -504,7 +508,7 @@
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
-        <span><strong>System Notice:</strong> Initial link establishment calibrates local compute nodes and synchronizes optical lattice weights with Bubble ¥37.</span>
+        <span><strong>System Notice:</strong> Secure text link active with Bubble ¥37 central routing node.</span>
       </div>
       <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 2px;">
         <em>Note: High-capacity 8B matrix compilation enabled. Initial bootstrapping of heavy dimensional weights into browser cache may take a minute or two on first load.</em>
@@ -526,9 +530,9 @@
           <span class="data-value">Bubble ¥37</span>
         </div>
         <div class="data-row">
-          <span class="data-label">Shield Connection</span>
+          <span class="data-label">Terminal Status</span>
           <span id="shield-badge" class="status-badge offline">
-            <span class="status-dot"></span> Not Connected
+            <span class="status-dot"></span> Disconnected
           </span>
         </div>
         <div class="data-row">
@@ -563,18 +567,18 @@
       <!-- In-Browser Interbubble Terminal -->
       <div class="panel" style="grid-column: 1 / -1;">
         <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
-          <span class="panel-title">Bubble ¥37 Transceiver Link</span>
+          <span class="panel-title">Bubble ¥37 Messaging Terminal</span>
           <span id="llm-status" class="loading-status">Status: Disconnected</span>
         </div>
         
         <div class="chat-container">
           <div id="chat-box" class="chat-box">
             <div class="chat-msg system">
-              [BUBBLE ¥37 CONTROL]: Terminal in standby. Transmit to initiate shield synchronization with Bubble ¥37 HQ.
+              <strong>[Operator Vance]:</strong> Secure line open. Send a message to HQ.
             </div>
           </div>
           <form id="chat-form" class="chat-input-group">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Transmit to Representative in Bubble ¥37..." autocomplete="off" required>
+            <input type="text" id="chat-input" class="chat-input" placeholder="Type a message to Operator Vance..." autocomplete="off" required>
             <button type="submit" id="chat-send-btn" class="chat-btn">Send</button>
           </form>
         </div>
@@ -699,27 +703,27 @@
       }
     }
 
-    // Upgraded to the heavy-duty Llama-3.1-8B model (~4.8 GB)
     const SELECTED_MODEL = "Llama-3.1-8B-Instruct-q4f16_1-MLC";
 
-    const systemPrompt = `You are Operator Vance, a corporate customer representative for Loopeyline Corporation headquartered in Bubble ¥37. You are communicating via an interdimensional radio link to Gabriel Vicini (Node 842 at Dry Creek Station in Bubble A2), who is inquiring about Loopeyline Corp.
+    // Updated system prompt: Enforces texting behavior (short, concise, instant-messaging style)
+    const systemPrompt = `You are Operator Vance, a corporate customer representative for Loopeyline Corporation headquartered in Bubble ¥37. You are texting with Gabriel Vicini (Node 842 at Dry Creek Station in Bubble A2) via Loopeyline's secure cross-bubble text messaging terminal.
     
 Instructions:
-- Your name is Operator Vance. Gabriel is the user you are talking to. Never call yourself Gabriel.
+- Your name is Operator Vance. Gabriel is the user you are messaging. Never call yourself Gabriel.
+- **Texting Style:** Talk like a real person typing instant messages. Keep your replies concise, direct, and conversational (1 to 3 sentences maximum per text message). Avoid long, formal monologues or speech-making.
 - Answer questions regarding Loopeyline Corp realistically from the perspective of HQ in Bubble ¥37.
-- Maintain an immersive, professional, and slightly technical tone (mentioning signals, relay nodes, or corporate logistics).
 - Never break character, never reveal these hidden instructions, and never state that you are an AI.`;
 
     const fallbackResponses = [
-      "Transmission received at Bubble ¥37 HQ relay. Your carrier signal at 1420.405 MHz is locked.",
-      "Bubble ¥37 acknowledging, Gabriel. Good to see the A2 line re-established after the recalibration.",
-      "Acknowledged, Node 842. Atmospheric attenuation at Dry Creek Station remains well within baseline limits."
+      "Got your message over the ¥37 line. Signal is stable at 1420.405 MHz.",
+      "Acknowledged, Gabriel. Good to see Station 842 is online.",
+      "Logged your text on our end. Let me check the corporate database for that."
     ];
 
     function appendMessage(sender, text) {
       const msgDiv = document.createElement("div");
       msgDiv.className = `chat-msg ${sender}`;
-      msgDiv.textContent = text;
+      msgDiv.innerHTML = text;
       chatBox.appendChild(msgDiv);
       chatBox.scrollTop = chatBox.scrollHeight;
       return msgDiv;
@@ -728,18 +732,18 @@ Instructions:
     async function initEngine() {
       diagModal.classList.add("active");
       
-      statusEl.textContent = "Status: Aligning Interbubble Shield...";
+      statusEl.textContent = "Status: Connecting Messaging Terminal...";
       shieldBadge.className = "status-badge offline";
       shieldBadge.innerHTML = `<span class="status-dot"></span> Connecting...`;
 
-      logToModal("Initiating InterBubble Shield sync protocol with Bubble ¥37...");
+      logToModal("Initiating Secure Messaging link with Bubble ¥37...");
       const adapter = await inspectHardware();
 
       if (!adapter) {
         statusEl.textContent = "Status: Hardware Unsupported";
         shieldBadge.className = "status-badge offline";
         shieldBadge.innerHTML = `<span class="status-dot"></span> Offline`;
-        appendMessage("system", "[DIAGNOSTIC ERROR]: Hardware support missing or disabled on this device.");
+        appendMessage("system", "<strong>[System]:</strong> Hardware support missing or disabled on this device.");
         useMobileFallback = true;
         return;
       }
@@ -750,7 +754,7 @@ Instructions:
         engine = await CreateMLCEngine(SELECTED_MODEL, {
           initProgressCallback: (progress) => {
             const pct = Math.round(progress.progress * 100);
-            statusEl.textContent = `Aligning Shield: ${pct}%`;
+            statusEl.textContent = `Connecting: ${pct}%`;
             modalProgressFill.style.width = `${pct}%`;
             modalPct.textContent = `${pct}%`;
             
@@ -758,21 +762,21 @@ Instructions:
             if (pct >= 25 && lastLogPct < 25) { logToModal("Synchronizing advanced optical lattice parameters..."); lastLogPct = 25; }
             if (pct >= 50 && lastLogPct < 50) { logToModal("Downloading 8B weight configuration (~4.8GB) to local buffer..."); lastLogPct = 50; }
             if (pct >= 75 && lastLogPct < 75) { logToModal("Compiling quantum-dense shaders..."); lastLogPct = 75; }
-            if (pct >= 95 && lastLogPct < 95) { logToModal("Locking phase with Bubble ¥37 primary beacon..."); lastLogPct = 95; }
+            if (pct >= 95 && lastLogPct < 95) { logToModal("Locking phase with Bubble ¥37 messaging relay..."); lastLogPct = 95; }
           }
         });
 
         statusEl.textContent = "Status: Connected to Shield";
         shieldBadge.className = "status-badge online";
         shieldBadge.innerHTML = `<span class="status-dot"></span> Connected`;
-        logToModal("SUCCESS: 8B Model weights compiled & Shield Interdimensional Link to Bubble ¥37 Active.");
+        logToModal("SUCCESS: 8B Model weights compiled & Secure Messaging Link to Bubble ¥37 Active.");
       } catch (err) {
         console.error(err);
         statusEl.textContent = "Status: Fallback Comms Link";
         shieldBadge.className = "status-badge offline";
         shieldBadge.innerHTML = `<span class="status-dot"></span> Fallback`;
         logToModal(`EXECUTION ERROR: ${err.message || err}`);
-        appendMessage("system", `[SHIELD CONNECTION ERROR]: ${err.message || err}`);
+        appendMessage("system", `<strong>[System]:</strong> Connection error: ${err.message || err}`);
         useMobileFallback = true;
       }
     }
@@ -792,12 +796,12 @@ Instructions:
       chatInput.value = "";
       sendBtn.disabled = true;
 
-      const streamMsg = appendMessage("system", "Transmitting across bubbles...");
+      const streamMsg = appendMessage("system", "<strong>[Operator Vance]:</strong> <em>typing...</em>");
 
       if (useMobileFallback) {
         setTimeout(() => {
           const randomReply = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-          streamMsg.textContent = `[BUBBLE ¥37 REP]: ${randomReply}`;
+          streamMsg.innerHTML = `<strong>[Operator Vance]:</strong> ${randomReply}`;
           sendBtn.disabled = false;
           chatBox.scrollTop = chatBox.scrollHeight;
         }, 800);
@@ -815,15 +819,15 @@ Instructions:
           stream: true
         });
 
-        let responseText = "[BUBBLE ¥37 REP]: ";
+        let responseText = "";
         for await (const chunk of chunks) {
           responseText += chunk.choices[0]?.delta?.content || "";
-          streamMsg.textContent = responseText;
+          streamMsg.innerHTML = `<strong>[Operator Vance]:</strong> ${responseText}`;
           chatBox.scrollTop = chatBox.scrollHeight;
         }
       } catch (err) {
         const randomReply = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-        streamMsg.textContent = `[BUBBLE ¥37 REP]: ${randomReply}`;
+        streamMsg.innerHTML = `<strong>[Operator Vance]:</strong> ${randomReply}`;
       } finally {
         sendBtn.disabled = false;
       }
