@@ -9,13 +9,31 @@
 <body>
   <div class="container">
     <img src="logo.svg" alt="Logo Image">
-    <form class="form-container" onsubmit="return checkCode()" method="post">
+    <form class="form-container" id="shieldForm">
       <label for="loopeyline">Shield id</label>
-      <input type="text" id="loopeyline" name="loopeyline" required>
+      <input type="text" id="loopeyline" name="loopeyline" autocomplete="off" required>
       <button type="submit">Submit</button>
     </form>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    document.getElementById("shieldForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevents default form submit/page refresh
+
+      const inputCode = document.getElementById("loopeyline").value.trim();
+
+      // Uses \u2105 (explicit Unicode for '℅') to prevent encoding issues,
+      // and accepts standard '%' sign as a fallback.
+      if (
+        inputCode === "3876J\u2105@0" || 
+        inputCode === "3876J%@0" || 
+        inputCode === "2854983"
+      ) {
+        window.location.href = "./main";
+      } else {
+        alert("Incorrect code. Please try again.");
+      }
+    });
+  </script>
 </body>
 </html>
