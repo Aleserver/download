@@ -1,7 +1,7 @@
 // JavaScript code
 function checkCode() {
   const inputCode = document.getElementById("loopeyline").value;
-  if (inputCode === "3876J℅@0" || inputCode === "2854983") {
+  if (inputCode === "3876J%@0" || inputCode === "2854983") {
     window.location.href = "./main";
     return false; // Prevent form submission for now, as we're handling the redirection manually.
   } else {
