@@ -159,12 +159,13 @@
       border: 1px solid var(--border-color);
       border-left: 3px solid var(--status-amber);
       border-radius: 6px;
-      padding: 0.625rem 0.875rem;
+      padding: 0.75rem 0.875rem;
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 4px;
       font-size: 0.75rem;
       color: var(--text-secondary);
+      line-height: 1.4;
     }
 
     .banner strong {
@@ -499,10 +500,15 @@
 
   <main>
     <div class="banner">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-      <span><strong>System Notice:</strong> Initial link establishment calibrates local compute nodes and synchronizes optical lattice weights with Bubble ¥37.</span>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span><strong>System Notice:</strong> Initial link establishment calibrates local compute nodes and synchronizes optical lattice weights with Bubble ¥37.</span>
+      </div>
+      <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 2px;">
+        <em>Note: Because the trans-dimensional infrastructure in Bubble A2 is still in its infancy, initial bootstrapping and local browser caching of heavy dimensional matrix configurations may take up to a minute. Subsequent page visits will load instantly.</em>
+      </div>
     </div>
 
     <div class="grid">
@@ -666,7 +672,6 @@
       modalConsole.scrollTop = modalConsole.scrollHeight;
     }
 
-    // Inspect real hardware but describe it purely in-universe
     async function inspectHardware() {
       if (!navigator.gpu) {
         logToModal("ERR: Local device lacks high-dimensional compute matrix.");
@@ -709,7 +714,7 @@ CONTEXT & HISTORY:
 - Gabriel is a licensed radio amateur and engineer. His technical background makes him an ideal operator profile for Shield work (understanding signal, carrier, noise, distance across extra dimensions).
 - Contact with Gabriel previously lapsed. The original Loopeyline colleague assigned to his file is no longer listed in corporate records (incomplete handling notes).
 - Following a recent Shield recalibration, Gabriel's line was reopened and your branch inherited his file for renewed outreach.
-- Local infrastructure in Bubble A2 is currently being set up / re-established.
+- Local infrastructure in Bubble A2 is currently in its infancy and being set up / re-established.
 
 COMMUNICATION DIRECTIVES:
 - Speak professionally, calm, and grounded as a corporate/interdimensional relay agent.
@@ -762,7 +767,6 @@ COMMUNICATION DIRECTIVES:
             modalProgressFill.style.width = `${pct}%`;
             modalPct.textContent = `${pct}%`;
             
-            // Intercept standard WebLLM logs and replace with in-universe milestones
             if (pct >= 5 && lastLogPct < 5) { logToModal("Allocating local VRAM for dimensional matrix..."); lastLogPct = 5; }
             if (pct >= 25 && lastLogPct < 25) { logToModal("Synchronizing optical lattice parameters..."); lastLogPct = 25; }
             if (pct >= 50 && lastLogPct < 50) { logToModal("Downloading dimensional weight configuration to local buffer..."); lastLogPct = 50; }
