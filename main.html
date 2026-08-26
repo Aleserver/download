@@ -443,9 +443,7 @@
   </footer>
 
   <script type="module">
-    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
-
-    const SELECTED_MODEL = "SmolLM2-135M-Instruct-q4f16_1-MLC";
+    import { CreateMLCEngine, prebuiltAppConfig } from "https://esm.run/@mlc-ai/web-llm";
 
     const statusEl = document.getElementById("llm-status");
     const chatBox = document.getElementById("chat-box");
@@ -455,6 +453,16 @@
 
     let engine = null;
     let useMobileFallback = false;
+
+    // Dynamically query available models in WebLLM's internal registry
+    const availableModels = prebuiltAppConfig.model_list.map(m => m.model_id);
+    
+    // Choose the best tiny model that exists in the current registry
+    const SELECTED_MODEL = availableModels.find(id => 
+      id.includes("Qwen2.5-0.5B") || 
+      id.includes("SmolLM") || 
+      id.includes("Llama-3.2-1B")
+    ) || availableModels[0];
 
     const systemPrompt = "You are a Loopeyline Corporation Representative located in Bubble ¥37. You are communicating via interbubble shield terminal with test subject Gabriel Vicini at Dry Creek Relay Station in Eagle, Idaho (Bubble A2). Speak professionally, reference physical terms like carrier frequency, quantum decoherence, or optical lattice sync. Keep answers to 1-2 brief sentences. Never state that you are an AI or virtual assistant.";
 
@@ -478,12 +486,13 @@
 
       if (!navigator.gpu) {
         statusEl.textContent = "Status: WebGPU Unsupported";
-        appendMessage("system", "[DIAGNOSTIC ERROR]: `navigator.gpu` is undefined.");
+        appendMessage("system", "[DIAGNOSTIC ERROR]: `navigator.gpu` is undefined on this browser.");
         useMobileFallback = true;
         return;
       }
 
       try {
+        statusEl.textContent = `Loading ${SELECTED_MODEL}...`;
         engine = await CreateMLCEngine(SELECTED_MODEL, {
           initProgressCallback: (progress) => {
             statusEl.textContent = `Syncing: ${Math.round(progress.progress * 100)}%`;
