@@ -507,7 +507,7 @@
         <span><strong>System Notice:</strong> Initial link establishment calibrates local compute nodes and synchronizes optical lattice weights with Bubble ¥37.</span>
       </div>
       <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 2px;">
-        <em>Note: Because the trans-dimensional infrastructure in Bubble A2 is still in its infancy, initial bootstrapping and local browser caching of heavy dimensional matrix configurations may take up to a minute. Subsequent page visits will load instantly.</em>
+        <em>Note: High-capacity 8B matrix compilation enabled. Initial bootstrapping of heavy dimensional weights into browser cache may take a minute or two on first load.</em>
       </div>
     </div>
 
@@ -699,9 +699,9 @@
       }
     }
 
-    const SELECTED_MODEL = "Llama-3.2-3B-Instruct-q4f16_1-MLC";
+    // Upgraded to the heavy-duty Llama-3.1-8B model (~4.8 GB)
+    const SELECTED_MODEL = "Llama-3.1-8B-Instruct-q4f16_1-MLC";
 
-    // Fixed system prompt: AI is now explicitly named "Operator Vance" so it stops claiming to be Gabriel
     const systemPrompt = `You are Operator Vance, a corporate customer representative for Loopeyline Corporation headquartered in Bubble ¥37. You are communicating via an interdimensional radio link to Gabriel Vicini (Node 842 at Dry Creek Station in Bubble A2), who is inquiring about Loopeyline Corp.
     
 Instructions:
@@ -744,7 +744,7 @@ Instructions:
         return;
       }
 
-      logToModal(`Requesting cross-bubble manifold from Bubble ¥37 routing...`);
+      logToModal(`Requesting high-capacity cross-bubble manifold from Bubble ¥37 routing...`);
 
       try {
         engine = await CreateMLCEngine(SELECTED_MODEL, {
@@ -754,10 +754,10 @@ Instructions:
             modalProgressFill.style.width = `${pct}%`;
             modalPct.textContent = `${pct}%`;
             
-            if (pct >= 5 && lastLogPct < 5) { logToModal("Allocating local VRAM for dimensional matrix..."); lastLogPct = 5; }
-            if (pct >= 25 && lastLogPct < 25) { logToModal("Synchronizing optical lattice parameters..."); lastLogPct = 25; }
-            if (pct >= 50 && lastLogPct < 50) { logToModal("Downloading 3B weight configuration to local buffer..."); lastLogPct = 50; }
-            if (pct >= 75 && lastLogPct < 75) { logToModal("Compiling quantum shaders..."); lastLogPct = 75; }
+            if (pct >= 5 && lastLogPct < 5) { logToModal("Allocating local VRAM for high-capacity tensor matrix..."); lastLogPct = 5; }
+            if (pct >= 25 && lastLogPct < 25) { logToModal("Synchronizing advanced optical lattice parameters..."); lastLogPct = 25; }
+            if (pct >= 50 && lastLogPct < 50) { logToModal("Downloading 8B weight configuration (~4.8GB) to local buffer..."); lastLogPct = 50; }
+            if (pct >= 75 && lastLogPct < 75) { logToModal("Compiling quantum-dense shaders..."); lastLogPct = 75; }
             if (pct >= 95 && lastLogPct < 95) { logToModal("Locking phase with Bubble ¥37 primary beacon..."); lastLogPct = 95; }
           }
         });
@@ -765,7 +765,7 @@ Instructions:
         statusEl.textContent = "Status: Connected to Shield";
         shieldBadge.className = "status-badge online";
         shieldBadge.innerHTML = `<span class="status-dot"></span> Connected`;
-        logToModal("SUCCESS: Model weights compiled & Shield Interdimensional Link to Bubble ¥37 Active.");
+        logToModal("SUCCESS: 8B Model weights compiled & Shield Interdimensional Link to Bubble ¥37 Active.");
       } catch (err) {
         console.error(err);
         statusEl.textContent = "Status: Fallback Comms Link";
