@@ -1,31 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loopeyline Hub</title>
-  <link rel="stylesheet" href="maincss.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loopeyline Corp | Quantum Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0b0d19;
+            --panel-bg: rgba(20, 24, 45, 0.7);
+            --accent-cyan: #00f3ff;
+            --accent-pink: #ff0055;
+            --accent-warning: #ff3300;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 243, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(255, 0, 85, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+            background: rgba(11, 13, 25, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-container img {
+            height: 40px;
+            width: auto;
+            filter: drop-shadow(0 0 8px var(--accent-cyan));
+        }
+
+        .brand-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-status {
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px var(--accent-cyan);
+        }
+
+        /* Dashboard Container */
+        .dashboard {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* User Profile Section */
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .pfp-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px dashed var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .pfp-placeholder::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-id {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+        }
+
+        .badge-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .badge-item {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        /* Grid Data Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .data-header {
+            grid-column: 1 / -1;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: -0.5rem;
+        }
+
+        .stat-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        .status-alert {
+            color: var(--accent-warning);
+            text-shadow: 0 0 8px rgba(255, 51, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Itinerary Widget */
+        .itinerary-card {
+            grid-column: 1 / -1;
+        }
+
+        .timeline {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            z-index: 1;
+        }
+
+        .node {
+            background: var(--bg-color);
+            border: 2px solid var(--accent-cyan);
+            padding: 6px 16px;
+            border-radius: 20px;
+            z-index: 2;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .node.active {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 10px var(--accent-pink);
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
 </head>
 <body>
-  <header class="white-header">
-    <div class="logo">
-      <img src="logo.svg" alt="Logo">
-      <span>Loopeyline Hub</span>
-    </div>
-  </header>
-  <main>
-    <!-- Add your content here -->
-  </main>
 
-  <!-- Popup -->
-  <div class="popup">
-    <div class="popup-content">
-      <span class="close-btn">&times;</span>
-      <p>Loopeyline is coming to your bubble! Please be patient while we set things up.</p>
-      
-    </div>
-  </div>
+    <header>
+        <div class="logo-container">
+            <img src="logo.svg" alt="Loopeyline Logo">
+            <span class="brand-name">Loopeyline</span>
+        </div>
+        <div class="nav-status">DIMENSION ENGINE: ONLINE</div>
+    </header>
 
-  <script src="mainjs.js"></script>
+    <div class="dashboard">
+        <!-- User Sidebar -->
+        <aside class="card profile-card">
+            <div class="pfp-placeholder" aria-label="Blank Profile Picture"></div>
+            <h2 class="user-name">Gabriel Vicini</h2>
+            <div class="user-id">ID: #9904-GV-PRIME</div>
+
+            <div class="badge-list">
+                <div class="badge-item">
+                    <span>Tier Class</span>
+                    <strong style="color: var(--accent-cyan);">Voyager Gold</strong>
+                </div>
+                <div class="badge-item">
+                    <span>Pass Type</span>
+                    <strong>Multiverse Unlimited</strong>
+                </div>
+                <div class="badge-item">
+                    <span>Jump Credit</span>
+                    <strong>1,420 Standard Epochs</strong>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Data -->
+        <main class="main-content">
+            <div class="data-header">Active Transit Telemetry</div>
+
+            <div class="card stat-card">
+                <span class="stat-label">Shield Status</span>
+                <span class="stat-value status-alert">Contact Lost</span>
+            </div>
+
+            <div class="card stat-card">
+                <span class="stat-label">Home Bubble</span>
+                <span class="stat-value">A2</span>
+            </div>
+
+            <div class="card stat-card">
+                <span class="stat-label">Current Timeline</span>
+                <span class="stat-value" style="color: var(--accent-cyan);">Earth-816</span>
+            </div>
+
+            <div class="card stat-card">
+                <span class="stat-label">Anchor Drift Rate</span>
+                <span class="stat-value">0.0042%</span>
+            </div>
+
+            <!-- Route Timeline Widget -->
+            <div class="card itinerary-card">
+                <span class="stat-label">Current Quantum Flight Path</span>
+                <div class="timeline">
+                    <div class="node">Origin: A2</div>
+                    <div class="node active">Transit Hub-7</div>
+                    <div class="node">Destination: Dimension X-9</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        &copy; 2026 Loopeyline Interdimensional Travel Corp. Safe travels across the continuum.
+    </footer>
+
 </body>
 </html>
