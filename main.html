@@ -661,6 +661,7 @@
     let useMobileFallback = false;
     let lastLogPct = -1;
     let isConnectedAndInitialized = false;
+    let isInitializing = false; // guards against double-init if user hits Enter twice fast
 
     // Full conversation memory array for maintaining chat context
     let conversationHistory = [];
@@ -736,6 +737,9 @@ Instructions:
     }
 
     async function initEngine() {
+      if (isInitializing || isConnectedAndInitialized) return;
+      isInitializing = true;
+
       diagModal.classList.add("active");
       
       statusEl.textContent = "Status: Connecting Messaging Terminal...";
@@ -759,6 +763,8 @@ Instructions:
           { role: "system", content: systemPrompt },
           { role: "assistant", content: "Secure channel open with Bubble ¥37. This is Operator Vance. Let's try to keep this professional, Gabriel." }
         ];
+        isInitializing = false;
+        diagModal.classList.remove("active");
         return;
       }
 
@@ -813,6 +819,9 @@ Instructions:
           { role: "system", content: systemPrompt },
           { role: "assistant", content: errGreeting }
         ];
+      } finally {
+        isInitializing = false;
+        diagModal.classList.remove("active");
       }
     }
 
@@ -821,18 +830,16 @@ Instructions:
       const text = chatInput.value.trim();
       if (!text) return;
 
+      sendBtn.disabled = true;
+      chatInput.value = "";
+
+      // If not connected yet, initialize first (this also auto-closes the modal when done),
+      // then fall through and actually send the message the user already typed.
       if (!isConnectedAndInitialized) {
-        sendBtn.disabled = true;
         await initEngine();
-        sendBtn.disabled = false;
-        return;
       }
 
       appendMessage("user", text);
-      chatInput.value = "";
-      sendBtn.disabled = true;
-
-      // Push user message to persistent conversation history
       conversationHistory.push({ role: "user", content: text });
 
       const streamMsg = appendMessage("system", "<strong>[Operator Vance]:</strong> <em>typing...</em>");
